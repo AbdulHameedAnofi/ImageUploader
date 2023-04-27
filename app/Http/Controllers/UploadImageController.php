@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UploadImageRequest;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 
 class UploadImageController extends Controller
 {
-    public function upload(Request $request) {
+    public function upload(UploadImageRequest $request) {
         $file_path = $request->file('file');
 
-        $uploadImage = cloudinary()
-                        ->upload($file_path)
-                        ->getRealPath();
+        $uploadImage = Cloudinary::upload($file_path->getRealPath());
 
-        return $uploadImage;
+        return response()
+                ->json([
+                    'file_path' => $uploadImage->getSecurePath()
+                ]);
     }
 }
