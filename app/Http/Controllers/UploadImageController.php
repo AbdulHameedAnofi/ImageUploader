@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 class UploadImageController extends Controller
 {
     public function upload(UploadImageRequest $request) {
+
+        $request = $request->validated();
+        
         $file_path = $request->file('file');
 
         $uploadImage = Cloudinary::upload($file_path->getRealPath());
